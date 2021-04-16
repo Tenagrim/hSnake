@@ -17,14 +17,10 @@ public class MainMouseListener implements MouseListener {
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-        win.mouseEventHandler(e);
-    }
+    public void mousePressed(MouseEvent e) { win.mousePressedHandler(e); }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
+    public void mouseReleased(MouseEvent e) { win.mouseReleasedHandler(e);}
 
     @Override
     public void mouseEntered(MouseEvent e) {

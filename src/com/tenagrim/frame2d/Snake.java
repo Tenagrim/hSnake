@@ -56,6 +56,11 @@ public class Snake {
             return;
         tail = body.get(body.size()-1);
         Coords tmp = headsOn(body.get(0), heading);
+        if (tmp .equals(map.getFood()))
+        {
+            grow();
+            map.newFood();
+        }
         for (Coords c : body)
             Coords.swap(tmp, c);
     }

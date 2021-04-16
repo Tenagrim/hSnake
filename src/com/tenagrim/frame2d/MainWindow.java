@@ -7,12 +7,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+
+
 class MainWindow extends JPanel implements ActionListener
 {
     private static final int    MAP_WIDTH = 30;
     private static final int    MAP_HEIGHT = 30;
     private static final int    SQ_SIZE = 20;
     private static final int    SNAKE_SQ_SIZE = 16;
+    private static final int    FOOD_SQ_SIZE = 10;
     private static int          stepTime = 170;
     private boolean             allowTurn = false;
     private int                 ticksToGrow = 10;
@@ -23,24 +26,48 @@ class MainWindow extends JPanel implements ActionListener
     private Map         map = new Map(MAP_WIDTH, MAP_HEIGHT);
     private Timer       mainTimer = new Timer(stepTime, this);
     private Snake       snake = new Snake(new Coords(MAP_HEIGHT / 2, MAP_WIDTH / 2), SnakeHeading.NORTH, map);
+    private Mouse       mouse = new Mouse();
+
+    //private Color       foodColor = new Color(120,80, 30);
+    private Color       foodColor = new Color(100,80, 30);
 
 
     public MainWindow(){
         setSize(MAP_WIDTH * SQ_SIZE, MAP_HEIGHT * SQ_SIZE);
         map.setBaseColor(new Color(0,70,0));
-        map.growBlock(0,0, 3,3, 3);
-        map.growBlock(1,1, 3,3, 2);
-        map.growBlock(2,2, 3,3, 1);
+//        map.growBlock(0,0, 3,3, 3);
+//        map.growBlock(1,1, 3,3, 2);
+//        map.growBlock(2,2, 3,3, 1);
         mainTimer.start();
     }
 
-    public void mouseEventHandler(MouseEvent e)
+    public void mousePressedHandler(MouseEvent e)
     {
-        if (e.getX() < map.getWidth() * SQ_SIZE && e.getY() < map.getHeight() * SQ_SIZE)
-            map.growOne(e.getX() / SQ_SIZE, e.getY() / SQ_SIZE);
+       // if (e.getX() < map.getWidth() * SQ_SIZE && e.getY() < map.getHeight() * SQ_SIZE)
+       //     map.growOne(e.getX() / SQ_SIZE, e.getY() / SQ_SIZE);
+        System.out.println("PRESS ON " + (e.getX() / SQ_SIZE) + " " + (e.getY() / SQ_SIZE));
+        mouse.setPos(new Coords(e.getX() / SQ_SIZE, e.getY() / SQ_SIZE));
+        if (e.getButton() == MouseEvent.BUTTON1)
+            mouse.setState(MouseState.ADD);
+        if (e.getButton() == MouseEvent.BUTTON3)
+            mouse.setState(MouseState.SUB);
         repaint();
-        System.out.println("CLICK ON " + (e.getX() / SQ_SIZE) + " " + (e.getY() / SQ_SIZE));
+
     }
+
+    public void mouseReleasedHandler(MouseEvent e)
+    {
+        System.out.println("RELEASE ON " + (e.getX() / SQ_SIZE) + " " + (e.getY() / SQ_SIZE));
+
+        mouse.setPos(new Coords(e.getX() / SQ_SIZE, e.getY() / SQ_SIZE));
+        if (mouse.getState() == MouseState.ADD)
+            map.growBlock(mouse.getPos(), mouse.getPrevPos(), 1);
+        if (mouse.getState() == MouseState.SUB)
+            map.growBlock(mouse.getPos(), mouse.getPrevPos(), -1);
+        mouse.setState(MouseState.IDLE);
+        repaint();
+    }
+
 
     public void keyEventHandler(KeyEvent e){
         if (e.getKeyCode() == KeyEvent.VK_SPACE)
@@ -76,12 +103,12 @@ class MainWindow extends JPanel implements ActionListener
     {
         snake.step();
         allowTurn = true;
-        ticks++;
-        if (ticks == ticksToGrow)
-        {
-            snake.grow();
-            ticks = 0;
-        }
+//        ticks++;
+//        if (ticks == ticksToGrow)
+//        {
+//            snake.grow();
+//            ticks = 0;
+//        }
         if (!snake.isAlive())
         {
             try {
@@ -112,6 +139,11 @@ class MainWindow extends JPanel implements ActionListener
                 g.fillRect(i * SQ_SIZE, j * SQ_SIZE, SQ_SIZE, SQ_SIZE);
             }
         }
+        Coords f = map.getFood();
+        g.setColor(map.shiftedBaseColor(f.getX(), f.getY(), foodColor));
+        g.fillRect(f.getX() * SQ_SIZE + (SQ_SIZE - FOOD_SQ_SIZE) / 2,
+                f.getY() * SQ_SIZE + (SQ_SIZE - FOOD_SQ_SIZE) / 2,
+                FOOD_SQ_SIZE, FOOD_SQ_SIZE);
     }
 
     private void paintSnake(Graphics g)
