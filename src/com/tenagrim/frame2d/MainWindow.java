@@ -9,20 +9,20 @@ import java.awt.event.MouseEvent;
 
 class MainWindow extends JPanel implements ActionListener
 {
-    private static final int MAP_WIDTH = 30;
-    private static final int MAP_HEIGHT = 30;
-    private static final int SQ_SIZE = 20;
-    private static final int SNAKE_SQ_SIZE = 16;
-    private static int stepTime = 170;
-    private boolean allowTurn = false;
-    private int ticksToGrow = 10;
-    private int ticks = 0;
+    private static final int    MAP_WIDTH = 30;
+    private static final int    MAP_HEIGHT = 30;
+    private static final int    SQ_SIZE = 20;
+    private static final int    SNAKE_SQ_SIZE = 16;
+    private static int          stepTime = 170;
+    private boolean             allowTurn = false;
+    private int                 ticksToGrow = 10;
+    private int                 ticks = 0;
+    private boolean             run = true;
 
-    private Rectangle rect = new Rectangle(10, 10, 10 ,10);
-    private Map map = new Map(MAP_WIDTH, MAP_HEIGHT);
-    private Timer mainTimer = new Timer(stepTime, this);
-    private Snake snake = new Snake(new Coords(MAP_HEIGHT / 2, MAP_WIDTH / 2), SnakeHeading.NORTH, map);
-    private boolean run = true;
+    //private Rectangle   rect = new Rectangle(10, 10, 10 ,10);
+    private Map         map = new Map(MAP_WIDTH, MAP_HEIGHT);
+    private Timer       mainTimer = new Timer(stepTime, this);
+    private Snake       snake = new Snake(new Coords(MAP_HEIGHT / 2, MAP_WIDTH / 2), SnakeHeading.NORTH, map);
 
 
     public MainWindow(){
@@ -99,7 +99,7 @@ class MainWindow extends JPanel implements ActionListener
         paintMap(g);
         paintSnake(g);
         g.setColor(Color.BLUE);
-        g.fillRect(rect.x, rect.y, rect.width, rect.height);
+
     }
 
     private void paintMap(Graphics g)
@@ -117,23 +117,17 @@ class MainWindow extends JPanel implements ActionListener
     private void paintSnake(Graphics g)
     {
         Coords b;
-        g.setColor(new Color( 210,80,60));
+        //g.setColor(snake.getBaseColor());
         for(int i = 0; i < snake.getLength(); i++)
         {
             b = snake.getBody(i);
+            g.setColor(map.shiftedBaseColor(b.getX(), b.getY(), snake.getBaseColor()));
             g.fillRect(b.getX() * SQ_SIZE + (SQ_SIZE - SNAKE_SQ_SIZE) / 2,
                     b.getY() * SQ_SIZE + (SQ_SIZE - SNAKE_SQ_SIZE) / 2,
                     SNAKE_SQ_SIZE, SNAKE_SQ_SIZE);
         }
     }
 
-    public void moveSquare(int dx, int dy)
-    {
-        final int step = 5;
-        rect.x += dx * step;
-        rect.y += dy * step;
-        repaint();
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

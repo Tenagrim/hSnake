@@ -2,6 +2,7 @@ package com.tenagrim.frame2d;
 
 import javafx.util.Pair;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +14,19 @@ public class Snake {
     private Coords  tail;
     private Map     map;
     private boolean alive;
+    private Color   baseColor;
 
 
     private         Snake(){}
 
+
+    public void setBaseColor(Color baseColor) {
+        this.baseColor = baseColor;
+    }
+
+    public Color getBaseColor() {
+        return baseColor;
+    }
 
     public Snake(Coords pos, SnakeHeading h, Map map)
     {
@@ -28,6 +38,7 @@ public class Snake {
         heading = h;
         tail = headsOn(body.get(body.size() - 1), getOpposite(h));
         length = 2;
+        baseColor = new Color( 90,40,50);
     }
 
 

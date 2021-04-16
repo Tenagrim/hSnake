@@ -32,19 +32,7 @@ public class Map {
 
     public Color getColor(int x, int y)
     {
-        int h = _content[x][y];
-        int diff = _maxHeight - _minHeight;
-        int r = _baseColor.getRed();
-        int g = _baseColor.getGreen();
-        int b = _baseColor.getBlue();
-        if (diff == 0)
-            return _baseColor;
-
-        return new Color(
-                r + ((255 - r) * h) / diff,
-                g + ((255 - g) * h) / diff,
-                b + ((255 - b) * h) / diff
-                );
+        return shiftedBaseColor(x, y, _baseColor);
     }
 
     private void growHill(int x, int y, int h)
@@ -81,11 +69,31 @@ public class Map {
 
     }
 
-    public int getHeight(Coords c)
+    public int      getHeight(Coords c)
     {
         return _content[c.getX()][c.getY()];
     }
-    private void addHeight(int x, int y, int h)
+
+    public Color    shiftedBaseColor( int x, int y, Color base)
+    {
+        final int TRESH = 240;
+
+        int h = _content[x][y];
+        int diff = _maxHeight - _minHeight;
+        int r = base.getRed();
+        int g = base.getGreen();
+        int b = base.getBlue();
+        if (diff == 0)
+            return base;
+
+        return new Color(
+                r + ((TRESH - r) * h) / diff,
+                g + ((TRESH - g) * h) / diff,
+                b + ((TRESH - b) * h) / diff
+        );
+    }
+
+    private void    addHeight(int x, int y, int h)
     {
         if (_content[x][y] < h)
             _content[x][y] = h;
