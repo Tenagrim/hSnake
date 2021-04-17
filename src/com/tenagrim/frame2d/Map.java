@@ -1,9 +1,10 @@
 package com.tenagrim.frame2d;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Random;
 
-public class Map {
+public class Map implements Serializable {
     private Color   _baseColor;
     private int     _width;
     private int     _height;

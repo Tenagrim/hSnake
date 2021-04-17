@@ -1,6 +1,8 @@
 package com.tenagrim.frame2d;
 
-public class Coords {
+import java.io.Serializable;
+
+public class Coords implements Serializable {
     private int x;
     private int y;
 

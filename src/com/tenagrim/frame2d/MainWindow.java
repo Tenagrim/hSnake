@@ -6,11 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-
+import java.io.*;
 
 
 class MainWindow extends JPanel implements ActionListener
 {
+    private static final String MAP_QUCKSAVE_FILE = "mapQuicksave.ser";
     private static final int    MAP_WIDTH = 30;
     private static final int    MAP_HEIGHT = 30;
     private static final int    SQ_SIZE = 20;
@@ -69,7 +70,42 @@ class MainWindow extends JPanel implements ActionListener
     }
 
 
+    private void quickSaveMap()
+    {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(
+                    new FileOutputStream(MAP_QUCKSAVE_FILE));
+            out.writeObject(map);
+            System.out.println("QUICKSAVED\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void quickLoadMap()
+    {
+        try {
+            ObjectInputStream oin = new ObjectInputStream(
+                    new FileInputStream(MAP_QUCKSAVE_FILE)
+            );
+            map = (Map) oin.readObject();
+            repaint();
+            System.out.println("QUICKLOADED\n");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // F5 116
+    // F9 120
+
     public void keyEventHandler(KeyEvent e){
+
+        System.out.println("GOT KEY CODE: " +  e.getKeyCode());
+        if (e.getKeyCode() == KeyEvent.VK_F5)
+            quickSaveMap();
+        if (e.getKeyCode() == KeyEvent.VK_F9)
+            quickLoadMap();
         if (e.getKeyCode() == KeyEvent.VK_SPACE)
             pause();
         if (!allowTurn)

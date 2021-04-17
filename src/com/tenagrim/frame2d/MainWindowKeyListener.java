@@ -11,7 +11,6 @@ public class MainWindowKeyListener implements KeyListener {
     {
         this.window = win;
     }
-
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -19,18 +18,6 @@ public class MainWindowKeyListener implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-/*
-        if (e.getKeyCode() == KeyEvent.VK_LEFT)
-            window.moveSquare(-1, 0);
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-            window.moveSquare(1, 0);
-        if (e.getKeyCode() == KeyEvent.VK_UP)
-            window.moveSquare(0, -1);
-        if (e.getKeyCode() == KeyEvent.VK_DOWN)
-            window.moveSquare(0, 1);
-*/
-//        window.repaint();
-//        System.out.println("Key Hit " + e.getKeyCode());
         window.keyEventHandler(e);
     }
 
