@@ -12,8 +12,8 @@ import java.io.*;
 class MainWindow extends JPanel implements ActionListener
 {
     private static final String MAP_QUCKSAVE_FILE = "mapQuicksave.ser";
-    private static final int    MAP_WIDTH = 30;
-    private static final int    MAP_HEIGHT = 30;
+    private static final int    MAP_WIDTH = 25;
+    private static final int    MAP_HEIGHT = 25;
     private static final int    SQ_SIZE = 20;
     private static final int    SNAKE_SQ_SIZE = 16;
     private static final int    FOOD_SQ_SIZE = 10;
@@ -34,7 +34,7 @@ class MainWindow extends JPanel implements ActionListener
 
 
     public MainWindow(){
-        setSize(MAP_WIDTH * SQ_SIZE, MAP_HEIGHT * SQ_SIZE);
+        setPreferredSize( new Dimension(MAP_WIDTH * SQ_SIZE, MAP_HEIGHT * SQ_SIZE));
         map.setBaseColor(new Color(0,70,0));
 //        map.growBlock(0,0, 3,3, 3);
 //        map.growBlock(1,1, 3,3, 2);
@@ -148,12 +148,16 @@ class MainWindow extends JPanel implements ActionListener
 //        }
         if (!snake.isAlive())
         {
+            resetSnake();
+            pause();
+            /*
             try {
                 Thread.sleep(5000, 0);
                 resetSnake();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            */
         }
         //System.out.println("tick");
     }
@@ -163,7 +167,6 @@ class MainWindow extends JPanel implements ActionListener
         paintMap(g);
         paintSnake(g);
         g.setColor(Color.BLUE);
-
     }
 
     private void paintMap(Graphics g)

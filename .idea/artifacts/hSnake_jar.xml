@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="hSnake:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/hSnake_jar</output-path>
+    <root id="archive" name="hSnake.jar">
+      <element id="module-output" name="hSnake" />
+    </root>
+  </artifact>
+</component>
