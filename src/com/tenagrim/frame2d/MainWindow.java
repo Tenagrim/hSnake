@@ -89,6 +89,7 @@ class MainWindow extends JPanel implements ActionListener
                     new FileInputStream(MAP_QUCKSAVE_FILE)
             );
             map = (Map) oin.readObject();
+            resetSnake();
             repaint();
             System.out.println("QUICKLOADED\n");
         } catch (IOException | ClassNotFoundException e) {
